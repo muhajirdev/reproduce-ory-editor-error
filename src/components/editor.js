@@ -17,38 +17,44 @@ import "ory-editor-plugins-parallax-background/lib/index.css" // Stylesheets for
 import layout from '../plugins/layout-plugin'
 import cta from '../plugins/cta'
 
+import { imagePlugin } from 'ory-editor-plugins-image';
+
+
 // Define which plugins we want to use. We only have slate and parallax available, so load those.
 const plugins = {
-  content: [slate()], // Define plugins for content cells. To import multiple plugins, use [slate(), image, spacer, divider]
-  layout: [
-    parallax({ defaultPlugin: slate() }),
-    layout,
-    cta
-  ], // Define plugins for layout cells
+  content: [slate(),imagePlugin()], // Define plugins for content cells. To import multiple plugins, use [slate(), image, spacer, divider]
+  layout: [parallax({ defaultPlugin: slate() }),cta,layout] // Define plugins for layout cells
 }
 
-// Creates an empty editable
-const content = createEmptyState()
 
-// Instantiate the editor
-const editor = new Editor({
-  plugins,
-  // pass the content state - you can add multiple editables here
-  editables: [content],
-})
 
 class App extends Component {
+
+  componentWillMount() {
+    this.editorState = this.props.content || createEmptyState();
+     this.editor = new Editor({
+      plugins,
+      // pass the content state - you can add multiple editables here
+      editables: [this.editorState],
+    })
+  }
   render() {
     return (
       <div>
-        {/* Content area */}
-        <Editable editor={editor} id={content.id} />
-
-        {/*  Default user interface  */}
-        <Trash editor={editor} />
-        <DisplayModeToggle editor={editor} />
-        <Toolbar editor={editor} />
+        <div>
+        <button title="press" onClick ={
+          ()=> alert(JSON.stringify(this.editorState))
+        }> show json</button>
       </div>
+      <div>        
+        
+        <Editable editor={this.editor} id={this.editorState.id} onChange={state => (this.editorState = state)} />
+          {/*  Default user interface  */}
+          <Trash editor={this.editor} />
+          <DisplayModeToggle editor={this.editor} />
+          <Toolbar editor={this.editor} />
+        </div>
+        </div>
     )
   }
 }
