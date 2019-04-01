@@ -23,7 +23,7 @@ import { imagePlugin } from 'ory-editor-plugins-image';
 // Define which plugins we want to use. We only have slate and parallax available, so load those.
 const plugins = {
   content: [slate(),imagePlugin()], // Define plugins for content cells. To import multiple plugins, use [slate(), image, spacer, divider]
-  layout: [parallax({ defaultPlugin: slate() })] // Define plugins for layout cells
+  layout: [parallax({ defaultPlugin: slate() }),cta,layout] // Define plugins for layout cells
 }
 
 
